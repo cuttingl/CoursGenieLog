@@ -1,5 +1,10 @@
 package exercice2;
 
+import java.io.FileNotFoundException;
+import java.util.List;
+
+import datamocklib.Person;
+import datamocklib.TxtHelper;
 import exercice2.models.*;
 
 public class MainExercice2 implements Exo2 {
@@ -12,9 +17,17 @@ public class MainExercice2 implements Exo2 {
      *  - Insérer les données dans la database locale grâce à la fonction TxtHelper.insertDataInTxt(line, "local.txt")
      *  - Afficher les données locale grace à TxtHelper.getDataFromTxt("local.txt")
      */
+
     @Override
     public void displayPersonFromChambery() {
-        System.out.println("todo");
+        List<String> bddlocale = TxtHelper.getDataFromTxt("local.txt");
+        for(String line : bddlocale){
+            String[] person = line.split(",");
+            if(person[4].equals("Chambéry")){
+                System.out.println(person);
+            }
+        }
+        
     }
 
     /*
@@ -24,7 +37,13 @@ public class MainExercice2 implements Exo2 {
      */
     @Override
     public void displayBoomers() {
-
+        List<String> bddlocale = TxtHelper.getDataFromTxt("local.txt");
+        for (String line : bddlocale) {
+            String[] person = line.split(",");
+            if (Integer.parseInt(person[2]) > 25) {
+                System.out.println(person);
+            }
+        }
     }
 
     /*
@@ -33,7 +52,13 @@ public class MainExercice2 implements Exo2 {
      */
     @Override
     public void displayFemales() {
-
+        List<String> bddlocale = TxtHelper.getDataFromTxt("local.txt");
+        for (String line : bddlocale) {
+            String[] person = line.split(",");
+            if (person[3].equals("female")) {
+                System.out.println(person);
+            }
+        }
     }
 
     /*
@@ -42,11 +67,31 @@ public class MainExercice2 implements Exo2 {
      */
     @Override
     public void displayFemaleBoomers() {
-
+        List<String> bddlocale = TxtHelper.getDataFromTxt("local.txt");
+        for (String line : bddlocale) {
+            String[] person = line.split(",");
+            if (person[2].equals("female") && Integer.parseInt(person[3]) > 25) {
+                System.out.println(person);
+            }
+        }
     }
 
     public static void main(String[] args) {
+        
+
         Exo2 exo2 = new MainExercice2();
+        List<String> bddServer = TxtHelper.getDataFromTxt("D:\\cours\\java_genielog\\CoursGenieLog\\server.txt");
+        try {
+            TxtHelper.clearDataLocal();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        for (String line : bddServer) {
+            TxtHelper.insertDataInTxt(line, "local.txt");
+        }
+        List<String> bddLocal = TxtHelper.getDataFromTxt("local.txt");
+
         exo2.displayBoomers();
     }
 }
